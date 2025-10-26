@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { Row, Form, Button } from 'react-bootstrap';
-import './Create.css'; // 👈 Add this CSS file
+import './Create.css';
 
 const pinataApi = process.env.REACT_APP_PINATA_API_KEY;
 const pinataSecret = process.env.REACT_APP_PINATA_SECRET_API_KEY;
@@ -91,11 +91,14 @@ const Create = ({ marketplace, nft }) => {
       await mintTx.wait();
 
       const id = await nft.tokenCount();
-      const approvalTx = await nft.setApprovalForAll(marketplace.address, true);
+      // FIXED: Use .target instead of .address for ethers v6
+      const approvalTx = await nft.setApprovalForAll(marketplace.target, true);
       await approvalTx.wait();
 
-      const listingPrice = ethers.formatEther(price.toString());
-      const listTx = await marketplace.makeItem(nft.address, id, listingPrice);
+      // FIXED: Use parseEther instead of formatEther to convert string to BigInt
+      const listingPrice = ethers.parseEther(price.toString());
+      // FIXED: Use .target instead of .address for ethers v6
+      const listTx = await marketplace.makeItem(nft.target, id, listingPrice);
       await listTx.wait();
 
       console.log('NFT stored safely in the vault!');

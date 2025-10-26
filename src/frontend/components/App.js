@@ -23,39 +23,40 @@ function App() {
   const [account, setAccount] = useState(null)
   const [nft, setNFT] = useState({})
   const [marketplace, setMarketplace] = useState({})
+  
   // MetaMask Login/Connect
   const web3Handler = async () => {
-  try {
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    setAccount(accounts[0]);
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      setAccount(accounts[0]);
 
-    // Get provider from Metamask
-    const provider = new ethers.BrowserProvider(window.ethereum)
-    const signer = provider.getSigner();
+      // Get provider from Metamask - FIXED: BrowserProvider instead of Web3Provider
+      const provider = new ethers.BrowserProvider(window.ethereum)
+      // FIXED: getSigner() now returns a Promise in v6
+      const signer = await provider.getSigner();
 
-    // Load contracts
-    loadContracts(signer);
+      // Load contracts
+      loadContracts(signer);
 
-    // Listen for chain changes
-    window.ethereum.on('chainChanged', () => {
-      window.location.reload();
-    });
+      // Listen for chain changes
+      window.ethereum.on('chainChanged', () => {
+        window.location.reload();
+      });
 
-    // Listen for account changes
-    window.ethereum.on('accountsChanged', (accounts) => {
-      if (accounts.length > 0) {
-        setAccount(accounts[0]);
-      } else {
-        setAccount(null); // handle wallet disconnect
-      }
-    });
-  } catch (err) {
-    console.error("Wallet connection failed:", err);
-  }
-};
+      // Listen for account changes
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+        } else {
+          setAccount(null); // handle wallet disconnect
+        }
+      });
+    } catch (err) {
+      console.error("Wallet connection failed:", err);
+    }
+  };
 
   const loadContracts = async (signer) => {
-    
     const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
     setMarketplace(marketplace)
     const nft = new ethers.Contract(NFTAddress.address, NFTAbi.abi, signer)
@@ -95,7 +96,6 @@ function App() {
         </div>
       </div>
     </BrowserRouter>
-
   );
 }
 

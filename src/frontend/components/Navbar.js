@@ -22,19 +22,29 @@ const Navigation = ({ web3Handler, account }) => {
                         <Nav.Link as={Link} to="/my-listed-items" className="mx-2 fw-semibold">
                             My Items
                         </Nav.Link>
+                     
                     </Nav>
-                    <Nav>
+                    <Nav className="align-items-center">
                         {account ? (
-                            <Nav.Link
-                                href={`https://etherscan.io/address/${account}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-decoration-none">
-                                <Button variant="outline-primary" size="sm" className="px-3">
-                                    <span className="me-2">🟢</span>
-                                    {account.slice(0, 6) + '...' + account.slice(-4)}
+                            <>
+                                <Nav.Link
+                                    href={`https://etherscan.io/address/${account}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-decoration-none me-2">
+                                    <Button variant="outline-primary" size="sm" className="px-3">
+                                        <span className="me-2">🟢</span>
+                                        {account.slice(0, 6) + '...' + account.slice(-4)}
+                                    </Button>
+                                </Nav.Link>
+                                <Button 
+                                    onClick={() => window.location.reload()} 
+                                    variant="outline-danger" 
+                                    size="sm"
+                                    className="px-3 fw-semibold">
+                                    Disconnect
                                 </Button>
-                            </Nav.Link>
+                            </>
                         ) : (
                             <Button 
                                 onClick={web3Handler} 
@@ -47,7 +57,7 @@ const Navigation = ({ web3Handler, account }) => {
                 </Navbar.Collapse>
             </Container>
             
-            <style >{`
+            <style>{`
                 .navbar {
                     backdrop-filter: blur(10px);
                     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -101,4 +111,4 @@ const Navigation = ({ web3Handler, account }) => {
     )
 }
 
-export default Navigation; 
+export default Navigation;

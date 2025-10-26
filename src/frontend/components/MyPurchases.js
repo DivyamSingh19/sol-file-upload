@@ -5,11 +5,13 @@ import { Row, Col, Card } from 'react-bootstrap'
 export default function MyPurchases({ marketplace, nft, account }) {
   const [loading, setLoading] = useState(true)
   const [purchases, setPurchases] = useState([])
+  
   const loadPurchasedItems = async () => {
-    // Fetch purchased items from marketplace by quering Offered events with the buyer set as the user
-    const filter =  marketplace.filters.Bought(null,null,null,null,null,account)
+    // Fetch purchased items from marketplace by querying Offered events with the buyer set as the user
+    const filter = marketplace.filters.Bought(null, null, null, null, null, account)
     const results = await marketplace.queryFilter(filter)
-    //Fetch metadata of each nft and add that to listedItem object.
+    
+    // Fetch metadata of each nft and add that to listedItem object.
     const purchases = await Promise.all(results.map(async i => {
       // fetch arguments from each result
       i = i.args
@@ -34,14 +36,17 @@ export default function MyPurchases({ marketplace, nft, account }) {
     setLoading(false)
     setPurchases(purchases)
   }
+  
   useEffect(() => {
     loadPurchasedItems()
   }, [])
+  
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
       <h2>Loading...</h2>
     </main>
   )
+  
   return (
     <div className="flex justify-center">
       {purchases.length > 0 ?
@@ -51,7 +56,8 @@ export default function MyPurchases({ marketplace, nft, account }) {
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <Card.Img variant="top" src={item.image} />
-                  <Card.Footer>{ethers.utils.formatEther(item.totalPrice)} ETH</Card.Footer>
+                  {/* FIXED: formatEther instead of ethers.utils.formatEther */}
+                  <Card.Footer>{ethers.formatEther(item.totalPrice)} ETH</Card.Footer>
                 </Card>
               </Col>
             ))}

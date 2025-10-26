@@ -12,7 +12,8 @@ function renderSoldItems(items) {
             <Card>
               <Card.Img variant="top" src={item.image} />
               <Card.Footer>
-                For {ethers.utils.formatEther(item.totalPrice)} ETH - Recieved {ethers.utils.formatEther(item.price)} ETH
+                {/* FIXED: formatEther instead of ethers.utils.formatEther */}
+                For {ethers.formatEther(item.totalPrice)} ETH - Received {ethers.formatEther(item.price)} ETH
               </Card.Footer>
             </Card>
           </Col>
@@ -26,6 +27,7 @@ export default function MyListedItems({ marketplace, nft, account }) {
   const [loading, setLoading] = useState(true)
   const [listedItems, setListedItems] = useState([])
   const [soldItems, setSoldItems] = useState([])
+  
   const loadListedItems = async () => {
     // Load all sold items that the user listed
     const itemCount = await marketplace.itemCount()
@@ -59,30 +61,34 @@ export default function MyListedItems({ marketplace, nft, account }) {
     setListedItems(listedItems)
     setSoldItems(soldItems)
   }
+  
   useEffect(() => {
     loadListedItems()
   }, [])
+  
   if (loading) return (
     <main style={{ padding: "1rem 0" }}>
       <h2>Loading...</h2>
     </main>
   )
+  
   return (
     <div className="flex justify-center">
       {listedItems.length > 0 ?
         <div className="px-5 py-3 container">
-            <h2>Listed</h2>
+          <h2>Listed</h2>
           <Row xs={1} md={2} lg={4} className="g-4 py-3">
             {listedItems.map((item, idx) => (
               <Col key={idx} className="overflow-hidden">
                 <Card>
                   <Card.Img variant="top" src={item.image} />
+                  {/* FIXED: formatEther instead of ethers.utils.formatEther */}
                   <Card.Footer>{ethers.formatEther(item.totalPrice)} ETH</Card.Footer>
                 </Card>
               </Col>
             ))}
           </Row>
-            {soldItems.length > 0 && renderSoldItems(soldItems)}
+          {soldItems.length > 0 && renderSoldItems(soldItems)}
         </div>
         : (
           <main style={{ padding: "1rem 0" }}>
