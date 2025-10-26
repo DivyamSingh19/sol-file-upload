@@ -37,14 +37,14 @@ const Home = ({ marketplace, nft }) => {
   }
 
   useEffect(() => {
-    setTimeout(() => setShowLanding(false), 3000) // Show landing screen for 3 seconds
+    setTimeout(() => setShowLanding(false), 3000)
     loadMarketplaceItems()
   }, [])
 
   if (showLanding) return (
     <div className="landing-screen flex justify-center items-center h-screen bg-gray-900 text-white text-center">
-      <h1 className="text-4xl font-bold">Welcome to the NFT Marketplace</h1>
-      <p className="text-lg mt-2">Discover, buy, and sell unique digital assets</p>
+      <h1 className="text-4xl font-bold">Welcome to the Safe Vault</h1>
+      <p className="text-lg mt-2">Store your assets digitally and securely on Ethereum</p>
     </div>
   )
 
@@ -70,11 +70,11 @@ const Home = ({ marketplace, nft }) => {
                     </Card.Text>
                   </Card.Body>
                   <Card.Footer>
-                    <div className="d-grid">
+                    {/* <div className="d-grid">
                       <Button onClick={() => buyMarketItem(item)} variant="primary" size="lg">
                         Buy for {ethers.formatEther(item.totalPrice)} ETH
                       </Button>
-                    </div>
+                    </div> */}
                   </Card.Footer>
                 </Card>
               </Col>
