@@ -1,0 +1,73 @@
+.vault-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 0;
+  background: radial-gradient(circle at center, #0a0f14, #000);
+  min-height: 100vh;
+  transition: opacity 1s ease, transform 1s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vault-form {
+  background: linear-gradient(145deg, #0d1117, #1b1f24);
+  border: 1px solid #00ffff40;
+  border-radius: 16px;
+  padding: 40px;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  animation: glow 3s infinite alternate;
+}
+
+@keyframes glow {
+  from { box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); }
+  to { box-shadow: 0 0 25px rgba(0, 255, 255, 0.6); }
+}
+
+.vault-title {
+  text-align: center;
+  background: linear-gradient(90deg, #00ffff, #0077ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.vault-input {
+  background: #0d1117;
+  border: 1px solid #00ffff40;
+  color: #00ffff;
+  transition: transform 0.2s ease, border 0.3s ease;
+}
+
+.vault-input:focus {
+  border: 1px solid #00ffff;
+  transform: scale(1.02);
+  box-shadow: 0 0 8px #00ffff70;
+}
+
+.read-only {
+  color: #00ffaa;
+  opacity: 0.9;
+}
+
+.vault-button {
+  background: linear-gradient(90deg, #00ffff, #0077ff);
+  border: none;
+  font-weight: bold;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.vault-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #00ffff90;
+}

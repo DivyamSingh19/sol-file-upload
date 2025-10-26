@@ -25,23 +25,35 @@ function App() {
   const [marketplace, setMarketplace] = useState({})
   // MetaMask Login/Connect
   const web3Handler = async () => {
+  try {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    setAccount(accounts[0])
+    setAccount(accounts[0]);
+
     // Get provider from Metamask
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    // Set signer
-    const signer = provider.getSigner()
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
 
-    window.ethereum.on('chainChanged', (chainId) => {
+    // Load contracts
+    loadContracts(signer);
+
+    // Listen for chain changes
+    window.ethereum.on('chainChanged', () => {
       window.location.reload();
-    })
+    });
 
-    window.ethereum.on('accountsChanged', async function (accounts) {
-      setAccount(accounts[0])
-      await web3Handler()
-    })
-    loadContracts(signer)
+    // Listen for account changes
+    window.ethereum.on('accountsChanged', (accounts) => {
+      if (accounts.length > 0) {
+        setAccount(accounts[0]);
+      } else {
+        setAccount(null); // handle wallet disconnect
+      }
+    });
+  } catch (err) {
+    console.error("Wallet connection failed:", err);
   }
+};
+
   const loadContracts = async (signer) => {
     
     const marketplace = new ethers.Contract(MarketplaceAddress.address, MarketplaceAbi.abi, signer)
