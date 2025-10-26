@@ -94,7 +94,7 @@ const Create = ({ marketplace, nft }) => {
       const approvalTx = await nft.setApprovalForAll(marketplace.address, true);
       await approvalTx.wait();
 
-      const listingPrice = ethers.utils.parseEther(price.toString());
+      const listingPrice = ethers.formatEther(price.toString());
       const listTx = await marketplace.makeItem(nft.address, id, listingPrice);
       await listTx.wait();
 
